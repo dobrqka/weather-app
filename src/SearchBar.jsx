@@ -9,7 +9,13 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 function SearchBar() {
   const dispatch = useDispatch();
 
+  // update this state upon typing something in the searchbar
   const [inputValue, setInputValue] = useState("");
+  // provide autocomplete suggestions
+  const [suggestions, setSuggestions] = useState([]);
+
+  // update input value on typing + provide suggestions
+  // when the string is longer than 3 characters
   const updateInput = async (e) => {
     setInputValue(e.target.value);
     if (e.target.value.length >= 3) {
@@ -19,14 +25,16 @@ function SearchBar() {
       setSuggestions([]);
     }
   };
-  // const [forecast, setForecast] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
 
+  // when we click the "Search" button, we fire up the getDaily
+  // that makes the API call and converts the response to json
+  // then we use the converted object containing all weather info
+  // and store it in redux
   const searchClick = async () => {
     try {
       const theForecast = await getDaily();
       await dispatch(fetchNewObj(theForecast));
-      // setSuggestions([]);
+      setSuggestions([]);
       setInputValue("");
     } catch {
       alert("Wrong city name");
@@ -34,16 +42,19 @@ function SearchBar() {
     }
   };
 
+  // same as above but on hitting enter while the input is focused
   const handleKey = async (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
       const theForecast = await getDaily();
       await dispatch(fetchNewObj(theForecast));
-      // setSuggestions([]);
+      setSuggestions([]);
       setInputValue("");
     }
   };
 
+  // when you click on a suggestion it sets the input value to the
+  // text content of the suggestion and clears the suggestions
   const handleSuggestionClick = (e) => {
     setInputValue(e.target.textContent);
     setSuggestions([]);
@@ -54,6 +65,9 @@ function SearchBar() {
   const theApi = "&cnt=10&appid=a17b38cf3321f72ce76dd08aa4f001f1&units=metric";
   const dailyUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=";
 
+  // construct the API URL and make the call, convert it to JSON to
+  // get lattitude and longtitude depending on the city from the input
+  // then using lat and lon for an API call for full weather info
   const getDaily = async () => {
     const cityData = await fetch(coordinatesUrl + inputValue + theApi);
     const dataJson = await cityData.json();
@@ -64,6 +78,8 @@ function SearchBar() {
     return weatherJson;
   };
 
+  // used to put focus back on the input after clicking
+  // on one of the suggestions
   const inputRef = useRef(null);
 
   return (

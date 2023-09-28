@@ -14,7 +14,10 @@ export const fetchCities = async (query) => {
         appid: API_KEY,
       },
     });
-    return response.data.list.map((city) => city.name);
+    console.log(response.data.list);
+    return response.data.list.map(
+      (city) => city.name + ", " + city.sys.country
+    );
   } catch (error) {
     console.error("Error fetching cities:", error);
     return [];
