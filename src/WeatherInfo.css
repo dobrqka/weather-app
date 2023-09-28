@@ -1,0 +1,17 @@
+.weather-info {
+  margin: 0 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 2rem;
+}
+
+.weather-info h2 {
+  margin-bottom: 3rem;
+  flex-basis: 100%;
+  display: grid;
+  justify-content: center;
+}
+
+.weather-info div {
+  flex: 0 1 auto;
+}

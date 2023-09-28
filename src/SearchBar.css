@@ -1,0 +1,14 @@
+.d-flex {
+  position: relative;
+}
+
+.d-flex > .btn-group-vertical {
+  position: absolute;
+  top: 4rem;
+  border-color: grey;
+}
+
+.d-flex > .btn-group-vertical > .btn-primary {
+  background-color: white;
+  color: rgb(48, 48, 48);
+}
